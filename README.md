@@ -131,26 +131,25 @@ void loop() {
 
 ## 🔨 Contribution
 
-### Passo 1
+### Step 1
 
-- **Opção 1**
+- **Option 1**
     - 🍴 Fork this repository!
 
-- **Opção 2**
+- **Option 2**
     - 👯 Clone to your machine.
 
-### Passo 2
+### Step 2
 
 - **Code it!** 👨‍💻👩‍💻
 
-### Passo 3
+### Step 3
 
 - 🔃 Create a pull request.
 
  ---
  
  ## 👨‍💻 Authors
-
 
 | **Marcelo Amorim** | **Caio Souza** |
 | :---: | :---: |
