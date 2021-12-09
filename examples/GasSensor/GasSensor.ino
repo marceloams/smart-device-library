@@ -10,12 +10,8 @@
 #include "ESP8266HTTPClient.h"
 #include "SmartDevices.h"
 
-#define MQ9PIN D0
 float sensor_volt; 
-float RS_gas; 
-float ratio; 
 int sensorValue;
-float R0 = 0.91; //custom value here
 bool gasStatus;
 
 const char* ssid = ""; //Enter your WIFI ssid
@@ -23,7 +19,6 @@ const char* password = ""; //Enter your WIFI password
 String server_url = "";// Enter the API endpoint without '/' at the end
 String devicesIds[] = {"id1", "id2"}; //Enter your device Id
 
-int dRead;
 int size;
 
 // Set up the client objet
@@ -35,12 +30,8 @@ SmartDevices smartDevices(server_url, client, http);
 void readGasStatus(){
     sensorValue = analogRead(A0); 
     sensor_volt = ((float)sensorValue / 1024) * 5.0; 
-    RS_gas = (5.0 - sensor_volt) / sensor_volt;
-    ratio = RS_gas / R0;
 
-    dRead = digitalRead(D0);
-
-    if(dRead == HIGH){
+    if(sensor_volt > 1){
         gasStatus = true;
     }else {
         gasStatus = false;
@@ -64,19 +55,15 @@ void setup() {
 
     smartDevices.initConnection(devicesIds, 1);
 
-    pinMode(D0, INPUT);
-
     delay(1000);
 }
 
 void loop() {
     readGasStatus();
 
-    if(gasStatus){
         String measures[] = {String(gasStatus)};
         size = sizeof(measures) / sizeof(String);
         smartDevices.sendMeasures(devicesIds[0], measures, size);
-    }
 
     delay(1000);
 }

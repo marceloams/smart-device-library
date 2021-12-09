@@ -20,12 +20,8 @@ float t = 0;
 #define PIRPIN D2
 boolean presence;
 
-#define MQ9PIN D0
 float sensor_volt; 
-float RS_gas; 
-float ratio; 
-int sensorValue
-float R0 = 0.91;
+int sensorValue;
 bool gasStatus;
 
 const char* ssid = ""; //Enter your WIFI ssid
@@ -74,12 +70,8 @@ void readPresence(){
 void readGasStatus(){
     sensorValue = analogRead(A0); 
     sensor_volt = ((float)sensorValue / 1024) * 5.0; 
-    RS_gas = (5.0 - sensor_volt) / sensor_volt;
-    ratio = RS_gas / R0;
 
-    dRead = digitalRead(MQ9PIN);
-
-    if(dRead == HIGH){
+    if(sensor_volt > 1){
         gasStatus = true;
     }else {
         gasStatus = false;
@@ -103,7 +95,6 @@ void setup() {
     smartDevices.initConnection(devicesIds, 1);
 
     pinMode(PIRPIN, INPUT);
-    pinMode(MQ9PIN, INPUT);
 
     delay(1000);
 }
@@ -118,20 +109,17 @@ void loop() {
     delay(500);
 
     readPresence();
-    if(presence){
         String measures2[] = {String(presence)};
         size = sizeof(measures2) / sizeof(String);
-        smartDevices.sendMeasures(devicesIds[0], measures2, size);
-    }
+    smartDevices.sendMeasures(devicesIds[1], measures2, size);
+    
 
     delay(500);
 
     readGasStatus();
-    if(gasStatus){
         String measures3[] = {String(gasStatus)};
         size = sizeof(measures3) / sizeof(String);
-        smartDevices.sendMeasures(devicesIds[0], measures3, size);
-    }
+    smartDevices.sendMeasures(devicesIds[2], measures3, size);
 
     delay(5000);
 }

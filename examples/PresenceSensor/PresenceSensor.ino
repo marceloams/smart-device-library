@@ -59,11 +59,9 @@ void setup() {
 void loop() {
     readPresence();
 
-    if(presence){
         String measures[] = {String(presence)};
         size = sizeof(measures) / sizeof(String);
         smartDevices.sendMeasures(devicesIds[0], measures, size);
-    }
 
     delay(1000);
 }
